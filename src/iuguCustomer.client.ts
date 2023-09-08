@@ -37,10 +37,6 @@ export interface IUpdateCustomerInput extends  ICreateCustomerInput {
 
 
 export class IuguCustomerClient extends IuguApiRequest {
-  constructor(input: IIuguConfig) {
-    super(input);
-  }
-
   public async create(input: ICreateCustomerInput) {
     try {
       const response = await this.api.post<ICreateCustomerOutput>('/v1/customers', input);

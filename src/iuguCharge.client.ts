@@ -1,4 +1,4 @@
-import {IIuguConfig, IuguApiRequest} from './iugu.apiRequest';
+import {IuguApiRequest} from './iugu.apiRequest';
 
 export interface IChargeInput {
   method?: 'bank_slip';
@@ -52,10 +52,6 @@ export interface IChargeOutput {
 }
 
 export class IuguChargeClient extends IuguApiRequest {
-  constructor(input: IIuguConfig) {
-    super(input);
-  }
-
   public async create(input: IChargeInput) {
     try {
       const response = await this.api.post<IChargeOutput>('/v1/charge', input);

@@ -262,10 +262,6 @@ export interface ICreateInvoiceOutput {
 }
 
 export class IuguInvoiceClient extends IuguApiRequest {
-  constructor(input: IIuguConfig) {
-    super(input);
-  }
-
   public async create(input: ICreateInvoice) {
     try {
       const response = await this.api.post<ICreateInvoiceOutput>('/v1/invoices', input);

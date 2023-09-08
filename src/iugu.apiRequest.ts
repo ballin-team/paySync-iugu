@@ -10,7 +10,7 @@ export interface IIuguConfig {
 export class IuguApiRequest {
   protected config: IIuguConfig;
   protected api: AxiosInstance;
-  protected constructor(input: IIuguConfig) {
+  constructor(input: IIuguConfig) {
     this.config = input;
     this.api = axios.create({
       baseURL: 'https://api.iugu.com',
