@@ -32,3 +32,12 @@ export interface ICreateCustomerOutput {
 export interface IUpdateCustomerInput extends  ICreateCustomerInput {
   default_payment_method_id: string;
 }
+
+export interface IGetCustomerInput {
+  limit?: number;
+  start?: number;
+  created_at_from?: string;
+  created_at_to?: string;
+  query?: string;
+  updated_since?: string;
+}

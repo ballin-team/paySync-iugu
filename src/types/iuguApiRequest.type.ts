@@ -3,4 +3,5 @@ export interface IIuguConfig {
   credentials: {
     apiToken: string;
   }
+  toCamelCase?: boolean;
 }

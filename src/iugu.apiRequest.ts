@@ -1,5 +1,6 @@
 import axios, {AxiosInstance} from 'axios';
 import {IIuguConfig} from './types';
+import {toCamel, toSnake} from './helpers';
 
 export class IuguApiRequest {
   protected config: IIuguConfig;
@@ -14,5 +15,13 @@ export class IuguApiRequest {
       },
       validateStatus: ((status) => status === 200)
     });
+  }
+
+  protected inputFormat<T>(data: T) {
+    return this.config.toCamelCase ? data : toSnake<T>(data)
+  }
+
+  protected responseFormat<T>(data: T) {
+    return this.config.toCamelCase ? toCamel<T>(data) : data;
   }
 }

@@ -1,21 +1,29 @@
 import {IuguApiRequest} from './iugu.apiRequest';
-import {ICreateInvoice, ICreateInvoiceOutput, IDuplicateInvoiceInput, IGetByIdInvoiceInput} from './types';
+import {
+  ICreateInvoice,
+  ICreateInvoiceOutput,
+  IDuplicateInvoiceInput,
+  IGetByIdInvoiceInput,
+  IIuguConfig
+} from './types';
 
 export class IuguInvoiceClient extends IuguApiRequest {
+  constructor(input: IIuguConfig) {
+    super(input);
+  }
   public async create(input: ICreateInvoice) {
     try {
-      const response = await this.api.post<ICreateInvoiceOutput>('/v1/invoices', input);
-      return response.data;
+      const response = await this.api.post<ICreateInvoiceOutput>('/v1/invoices', this.inputFormat(input));
+      return this.responseFormat(response.data);
     } catch (e) {
       throw e;
     }
   }
 
-  public  async refund(input: {id: string, amountInCents?: number}) {
+  public  async refund(id: string, body: { amount_in_cents?: number;}) {
     try {
-      const { id, amountInCents } = input;
-      const response = await this.api.post<ICreateInvoiceOutput>(`/v1/invoices/${id}/refund`, { partial_value_refund_cents: amountInCents });
-      return response.data;
+      const response = await this.api.post<ICreateInvoiceOutput>(`/v1/invoices/${id}/refund`, body ? this.inputFormat(body) : undefined);
+      return this.responseFormat(response.data);
     } catch (e) {
       throw e;
     }
@@ -24,7 +32,7 @@ export class IuguInvoiceClient extends IuguApiRequest {
   public async cancel(id: string) {
     try {
       const response = await this.api.put<ICreateInvoiceOutput>(`/v1/invoices/${id}/cancel`);
-      return response.data;
+      return this.responseFormat(response.data);
     } catch (e) {
       throw e;
     }
@@ -33,8 +41,8 @@ export class IuguInvoiceClient extends IuguApiRequest {
   public async duplicate(id: string, body: IDuplicateInvoiceInput) {
     try {
 
-      const response = await this.api.put<ICreateInvoiceOutput>(`/v1/invoices/${id}/duplicate`, body);
-      return response.data;
+      const response = await this.api.put<ICreateInvoiceOutput>(`/v1/invoices/${id}/duplicate`, this.inputFormat(body));
+      return this.responseFormat(response.data);
     } catch (e) {
       throw e;
     }
@@ -44,7 +52,7 @@ export class IuguInvoiceClient extends IuguApiRequest {
     try {
 
       const response = await this.api.get<ICreateInvoiceOutput>(`/v1/invoices/${id}`);
-      return response.data;
+      return this.responseFormat(response.data);
     } catch (e) {
       throw e;
     }
@@ -54,7 +62,7 @@ export class IuguInvoiceClient extends IuguApiRequest {
     try {
 
       const response = await this.api.get<ICreateInvoiceOutput>('/v1/invoices');
-      return response.data;
+      return this.responseFormat(response.data);
     } catch (e) {
       throw e;
     }
@@ -63,7 +71,7 @@ export class IuguInvoiceClient extends IuguApiRequest {
   public async externallyPayed(id: string) {
     try {
       const response = await this.api.get<ICreateInvoiceOutput>(`/v1/invoices/${id}/externally_pay`);
-      return response.data;
+      return this.responseFormat(response.data);
     } catch (e) {
       throw e;
     }

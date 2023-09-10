@@ -1,20 +1,27 @@
 import {IuguApiRequest} from './iugu.apiRequest';
-import {ICreateCustomerInput, ICreateCustomerOutput, IUpdateCustomerInput} from './types';
+import {
+  ICreateCustomerInput,
+  ICreateCustomerOutput,
+  ICreateTokenOutput,
+  IGetCustomerInput,
+  IUpdateCustomerInput
+} from './types';
+import {CamelCaseToSnakeNested} from './helpers';
 
 export class IuguCustomerClient extends IuguApiRequest {
-  public async create(input: ICreateCustomerInput) {
+  public async create(input: ICreateCustomerInput | CamelCaseToSnakeNested<ICreateCustomerInput>) {
     try {
-      const response = await this.api.post<ICreateCustomerOutput>('/v1/customers', input);
-      return response.data;
+      const response = await this.api.post<ICreateCustomerOutput>('/v1/customers', this.inputFormat(input));
+      return this.responseFormat(response.data);
     } catch (e) {
       throw e;
     }
   }
 
-  public async update(id: string, data: Partial<IUpdateCustomerInput>) {
+  public async update(id: string, data: Partial<IUpdateCustomerInput | CamelCaseToSnakeNested<IUpdateCustomerInput>>) {
     try {
-      const response = await this.api.put<ICreateCustomerOutput>(`/v1/customers/${id}`, data);
-      return response.data;
+      const response = await this.api.put<ICreateCustomerOutput>(`/v1/customers/${id}`, this.inputFormat(data));
+      return this.responseFormat(response.data);
     } catch (e) {
       throw e;
     }
@@ -23,7 +30,7 @@ export class IuguCustomerClient extends IuguApiRequest {
   public async delete(id: string) {
     try {
       const response = await this.api.delete<ICreateCustomerOutput>(`/v1/customers/${id}`);
-      return response.data;
+      return this.responseFormat(response.data);
     } catch (e) {
       throw e;
     }
@@ -32,16 +39,16 @@ export class IuguCustomerClient extends IuguApiRequest {
   public async getById(id: string) {
     try {
       const response = await this.api.get<ICreateCustomerOutput>(`/v1/customers/${id}`);
-      return response.data;
+      return this.responseFormat(response.data);
     } catch (e) {
       throw e;
     }
   }
 
-  public async get(input: any) {
+  public async get(input: IGetCustomerInput) {
     try {
-      const response = await this.api.get<ICreateCustomerOutput>('/v1/customers', { params: input });
-      return response.data;
+      const response = await this.api.get<ICreateCustomerOutput>('/v1/customers', { params: this.inputFormat(input) });
+      return this.responseFormat(response.data);
     } catch (e) {
       throw e;
     }
