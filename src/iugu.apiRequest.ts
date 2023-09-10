@@ -1,11 +1,5 @@
 import axios, {AxiosInstance} from 'axios';
-
-export interface IIuguConfig {
-  timeout?: number;
-  credentials: {
-    apiToken: string;
-  }
-}
+import {IIuguConfig} from './types';
 
 export class IuguApiRequest {
   protected config: IIuguConfig;

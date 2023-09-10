@@ -1,7 +1,8 @@
-import {IIuguConfig, IuguApiRequest} from './iugu.apiRequest';
+import {IuguApiRequest} from './iugu.apiRequest';
 import {IuguInvoiceClient} from './iuguInvoice.client';
 import {IuguCustomerClient} from './iuguCustomer.client';
 import {IuguChargeClient} from './iuguCharge.client';
+import {IIuguConfig} from './types';
 
 export class IuguClient extends IuguApiRequest{
   public invoice: IuguInvoiceClient;

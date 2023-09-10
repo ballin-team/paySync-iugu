@@ -1,1 +1,2 @@
-console.log('test');
+export * from './iugu.client';
+export * from './types';
