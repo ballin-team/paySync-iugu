@@ -109,6 +109,20 @@ export interface ICreateInvoice {
   password?: string;
 }
 
+export enum InvoiceStatus {
+  pending =  'pending',
+  paid = 'paid',
+  canceled = 'canceled',
+  in_analysis = 'in_analysis',
+  draft = 'draft',
+  partially_paid = 'partially_paid',
+  refunded = 'refunded',
+  expired = 'expired',
+  in_protest = 'in_protest',
+  chargeback = 'chargeback',
+  externally_paid = 'externally_paid'
+}
+
 export interface ICreateInvoiceOutput {
   id: string;
   due_date: string;
@@ -118,7 +132,7 @@ export interface ICreateInvoiceOutput {
   items_total_cents: number;
   notification_url?: string;
   return_url?: string;
-  status: string;
+  status: InvoiceStatus;
   tax_cents: number;
   total_cents: number;
   total_paid_cents: number;
@@ -215,7 +229,7 @@ export interface ICreateInvoiceOutput {
   transaction_number: number;
   payment_method?: string;
   financial_return_dates?: string;
-  bank_slip: {
+  bank_slip?: {
     digitable_line: string;
     barcode_data: string;
     barcode: string;
@@ -224,7 +238,7 @@ export interface ICreateInvoiceOutput {
     bank_slip_error_code: string;
     bank_slip_error_message?: string
   };
-  pix: {
+  pix?: {
     qrcode: string;
     qrcode_text: string;
     status: string;
@@ -261,10 +275,116 @@ export interface ICreateInvoiceOutput {
   credit_card_transaction?: string;
 }
 
+export interface IDuplicateInvoiceInput {
+  due_date: string;
+  items?: {
+    id: string;
+    description: string;
+    price_cents: number;
+    quantity: number;
+    created_at: string;
+    updated_at: string;
+    price: string;
+  }[];
+  ignore_due_email?: boolean;
+  ignore_canceled_email?: boolean;
+  current_fines_option?: boolean;
+  keep_early_payment_discount?: boolean;
+}
+
+export interface IGetByIdInvoiceInput {
+  limit?: number;
+  start?: number;
+  created_at_from?: string;
+  created_at_to?: string;
+  paid_at_from?: string;
+  paid_at_to?: string;
+  due_date?: string;
+  query?: string;
+  updated_since?: string;
+  customer_id?: string;
+  status_filter?: string;
+}
+
+export interface IGetInvoiceInput {
+  facets: {
+    status: {
+      _type: string;
+      missing: number;
+      total: number;
+      other: number;
+      terms:       {
+        term: InvoiceStatus,
+        count: number
+      }[];
+    }
+  },
+  totalItems: number;
+  items: ICreateInvoiceOutput[];
+}
+
 export class IuguInvoiceClient extends IuguApiRequest {
   public async create(input: ICreateInvoice) {
     try {
       const response = await this.api.post<ICreateInvoiceOutput>('/v1/invoices', input);
+      return response.data;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public  async refund(input: {id: string, amountInCents?: number}) {
+    try {
+      const { id, amountInCents } = input;
+      const response = await this.api.post<ICreateInvoiceOutput>(`/v1/invoices/${id}/refund`, { partial_value_refund_cents: amountInCents });
+      return response.data;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async cancel(id: string) {
+    try {
+      const response = await this.api.put<ICreateInvoiceOutput>(`/v1/invoices/${id}/cancel`);
+      return response.data;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async duplicate(id: string, body: IDuplicateInvoiceInput) {
+    try {
+
+      const response = await this.api.put<ICreateInvoiceOutput>(`/v1/invoices/${id}/duplicate`, body);
+      return response.data;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async getById(id: string) {
+    try {
+
+      const response = await this.api.get<ICreateInvoiceOutput>(`/v1/invoices/${id}`);
+      return response.data;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async get(input: IGetByIdInvoiceInput) {
+    try {
+
+      const response = await this.api.get<ICreateInvoiceOutput>('/v1/invoices');
+      return response.data;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public async externallyPayed(id: string) {
+    try {
+      const response = await this.api.get<ICreateInvoiceOutput>(`/v1/invoices/${id}/externally_pay`);
       return response.data;
     } catch (e) {
       throw e;
