@@ -1,4 +1,4 @@
-import {IIuguConfig, IuguApiRequest} from './iugu.apiRequest';
+import {IuguApiRequest} from './iugu.apiRequest';
 
 export interface ICreateCustomerInput {
   email: string;
