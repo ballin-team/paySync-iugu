@@ -51,6 +51,36 @@ export interface IChargeOutput {
   last4?: string;
 }
 
+export interface ICreateTokenInput {
+  account_id: string;
+  method: string;
+  test?: boolean;
+  date?: {
+    number: string;
+    verification_value: string;
+    first_name: string;
+    last_name: string;
+    month: string;
+    year: string;
+  }
+}
+
+export interface ICreateTokenOutput {
+  id: string;
+  method: string;
+  extra_info: {
+    brand: string;
+    holder_name: string;
+    display_number: string;
+    bin: string;
+    month: string;
+    year: string;
+  };
+  test: boolean;
+  message?: string;
+  errors?: any;
+}
+
 export class IuguChargeClient extends IuguApiRequest {
   public async create(input: IChargeInput) {
     try {
@@ -60,5 +90,15 @@ export class IuguChargeClient extends IuguApiRequest {
     } catch (e) {
       throw e;
     }
+  }
+
+  public async createToken(input: ICreateTokenInput) {
+  try {
+    const response = await this.api.post<ICreateTokenOutput>('/v1/payment_token', input);
+    if(!response.data.id) throw new Error(response.data.message);
+    return response.data;
+  } catch (e) {
+    throw e;
+  }
   }
 }
