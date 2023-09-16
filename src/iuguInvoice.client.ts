@@ -3,14 +3,10 @@ import {
   ICreateInvoice,
   ICreateInvoiceOutput,
   IDuplicateInvoiceInput,
-  IGetByIdInvoiceInput,
-  IIuguConfig
+  IGetByIdInvoiceInput
 } from './types';
 
 export class IuguInvoiceClient extends IuguApiRequest {
-  constructor(input: IIuguConfig) {
-    super(input);
-  }
   public async create(input: ICreateInvoice) {
     try {
       const response = await this.api.post<ICreateInvoiceOutput>('/v1/invoices', this.inputFormat(input));

@@ -1,12 +1,8 @@
 import {IuguApiRequest} from './iugu.apiRequest';
-import {IChargeInput, IChargeOutput, ICreateTokenInput, ICreateTokenOutput, IIuguConfig} from './types';
+import {IChargeInput, IChargeOutput, ICreateTokenInput, ICreateTokenOutput} from './types';
 import {CamelCaseToSnakeNested} from '@ballin-team/data-format';
 
 export class IuguChargeClient extends IuguApiRequest {
-  constructor(input: IIuguConfig) {
-    super(input);
-  }
-
   public async create(input: IChargeInput | CamelCaseToSnakeNested<IChargeInput>) {
     try {
       const response = await this.api.post<IChargeOutput>('/v1/charge', this.inputFormat(input));
