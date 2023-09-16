@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/ballin-team/paySync-iugu#readme",
   "dependencies": {
+    "@ballin-team/data-format": "^1.2.0",
     "axios": "^1.4.0",
     "tweetnacl": "^1.0.3"
   },
@@ -56,10 +57,15 @@
     "lib/**/*"
   ],
   "release": {
-    "branches": ["main"]
+    "branches": [
+      "main"
+    ]
   },
   "publishConfig": {
     "access": "public"
   },
-  "keywords": ["iugu", "iugu api"]
+  "keywords": [
+    "iugu",
+    "iugu api"
+  ]
 }
