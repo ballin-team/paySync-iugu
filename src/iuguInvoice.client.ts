@@ -57,7 +57,7 @@ export class IuguInvoiceClient extends IuguApiRequest {
   public async get(input: IGetByIdInvoiceInput) {
     try {
 
-      const response = await this.api.get<ICreateInvoiceOutput>('/v1/invoices');
+      const response = await this.api.get<ICreateInvoiceOutput>('/v1/invoices', { params: this.inputFormat(input) });
       return this.responseFormat(response.data);
     } catch (e) {
       throw e;
