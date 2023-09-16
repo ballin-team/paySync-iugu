@@ -1,6 +1,6 @@
 import {IuguApiRequest} from './iugu.apiRequest';
 import {IChargeInput, IChargeOutput, ICreateTokenInput, ICreateTokenOutput, IIuguConfig} from './types';
-import {CamelCaseToSnakeNested} from './helpers';
+import {CamelCaseToSnakeNested} from '@ballin-team/data-format';
 
 export class IuguChargeClient extends IuguApiRequest {
   constructor(input: IIuguConfig) {

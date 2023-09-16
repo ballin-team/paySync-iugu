@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/ballin-team/paySync-iugu#readme",
   "dependencies": {
-    "@ballin-team/data-format": "^1.2.0",
+    "@ballin-team/data-format": "^1.2.1",
     "axios": "^1.4.0",
     "tweetnacl": "^1.0.3"
   },

@@ -2,11 +2,10 @@ import {IuguApiRequest} from './iugu.apiRequest';
 import {
   ICreateCustomerInput,
   ICreateCustomerOutput,
-  ICreateTokenOutput,
   IGetCustomerInput,
   IUpdateCustomerInput
 } from './types';
-import {CamelCaseToSnakeNested} from './helpers';
+import {CamelCaseToSnakeNested} from '@ballin-team/data-format';
 
 export class IuguCustomerClient extends IuguApiRequest {
   public async create(input: ICreateCustomerInput | CamelCaseToSnakeNested<ICreateCustomerInput>) {
